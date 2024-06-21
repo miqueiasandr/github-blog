@@ -55,9 +55,12 @@ display: flex;
 flex-direction: column;
 justify-content: space-around;
 
+width: 100%;
+
   header {
     display: flex;
     justify-content: space-between;
+
 
     h1 {
       font-size: 1.5rem;
@@ -65,7 +68,7 @@ justify-content: space-around;
       color: ${props => props.theme["base-title"]}
     }
 
-    button {
+    a {
       background-color: transparent;
       border: 0;
 
@@ -73,6 +76,8 @@ justify-content: space-around;
       justify-content: center;
       align-items: center;
       gap: 0.5rem;
+
+      text-decoration: none;
       color: ${props => props.theme.blue};
       font-size: 0.75rem;
       line-height: 1.6;
@@ -135,6 +140,10 @@ export const BlogList = styled.main`
 
   margin: 3rem auto 0;
   max-width: 54rem;
+
+  a {
+    text-decoration: none;
+  }
 
 `
 

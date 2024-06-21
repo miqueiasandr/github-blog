@@ -3,11 +3,57 @@ import { Header } from "../../components/Header";
 import { Container, MainContainer, ProfileButton, TitleContainer } from "./styles";
 import { faArrowUpRightFromSquare, faCalendarDay, faChevronLeft, faComment } from "@fortawesome/free-solid-svg-icons";
 
-import DinamicTyping from '../../assets/DinamicTyping.svg'
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
-import { NavLink } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
+import { api } from "../../lib/axios";
+import { useEffect, useState } from "react";
+import { formatDistanceToNow } from "date-fns";
+import { ptBR } from "date-fns/locale/pt-BR";
+
+interface issueType {
+  issueTitle: string;
+  login: string;
+  created_at: string;
+  comments:string;
+  html_url: string;
+  body: string;
+}
 
 export function OpenedPost(){
+
+  const [issue, setIssue] = useState<issueType>()
+
+  const {issueNumber} = useParams()
+
+  async function getIssueInformations(){
+    const response = await api.get(`https://api.github.com/repos/miqueiasandr/github-blog/issues/${issueNumber}`)
+
+      const publishedDateRelativeToNow = formatDistanceToNow(new Date(response.data.created_at), {
+      locale: ptBR,
+      addSuffix: true
+    })
+
+
+    const issue = {
+      html_url: response.data.html_url,
+      issueTitle: response.data.title,
+      login: response.data.user.login,
+      created_at: publishedDateRelativeToNow,
+      comments: response.data.comments,
+      body: response.data.body,
+    }
+
+    console.log(issue.created_at)
+
+
+    setIssue(issue)
+  }
+
+  useEffect(()=>{
+    getIssueInformations()
+  },[])
+
+
   return (
     <Container>
       <Header />
@@ -19,40 +65,37 @@ export function OpenedPost(){
             <span>VOLTAR</span>
           </NavLink >
 
-          <a href="https://github.com">
+          <a href={issue?.html_url}>
             <span>VER NO GITHUB</span>
             <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
           </a>
         </header>
 
-        <h1>JavaScript data types and data structures</h1>
+        <h1>{issue?.issueTitle}</h1>
 
         <footer>
             <ProfileButton>
               <FontAwesomeIcon icon={faGithub} />
-              <span>Miqueiasandr</span>
+              <span>{issue?.login}</span>
             </ProfileButton>
 
             <ProfileButton>
               <FontAwesomeIcon icon={faCalendarDay} />
-              <span>Há 1 dia</span>
+              <span>{issue?.created_at}</span>
             </ProfileButton>
 
             <ProfileButton>
               <FontAwesomeIcon icon={faComment} />
-              <span>5 Comentários</span>
+              <span>{issue?.comments} Comentários</span>
             </ProfileButton>
           </footer>
       </TitleContainer>
 
       <MainContainer>
         <p>
-          Programming languages all have built-in data structures, but these often differ from one language to another. This article attempts to list the built-in data structures available in JavaScript and what properties they have. These can be used to build other data structures. Wherever possible, comparisons with other languages are drawn.
-          Dynamic typing
-          JavaScript is a loosely typed and dynamic language. Variables in JavaScript are not directly associated with any particular value type, and any variable can be assigned (and re-assigned) values of all types:
+          {issue?.body}
         </p>
 
-        <img src={DinamicTyping} alt="" />
       </MainContainer>
     </Container>
   )

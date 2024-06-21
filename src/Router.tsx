@@ -6,7 +6,7 @@ export function Router(){
   return (
    <Routes>
     <Route path="/" Component={Blog}/>
-    <Route path="/post" Component={OpenedPost}/>
+    <Route path="/post/:issueNumber" Component={OpenedPost}/>
    </Routes>
   )
 }
