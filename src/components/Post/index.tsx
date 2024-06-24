@@ -1,4 +1,5 @@
 import { PostContainer } from "./styles";
+import ReactMarkdown from 'react-markdown'
 
 interface PostProps {
   issueTitle?: string;
@@ -20,7 +21,7 @@ export function Post({ issueTitle, created_at, body } : PostProps){
       </header>
 
       <p>
-        {body}
+        <ReactMarkdown>{body}</ReactMarkdown>
       </p>
     </PostContainer>
   )

@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Header } from "../../components/Header";
 import { Container, MainContainer, ProfileButton, TitleContainer } from "./styles";
 import { faArrowUpRightFromSquare, faCalendarDay, faChevronLeft, faComment } from "@fortawesome/free-solid-svg-icons";
+import ReactMarkdown from 'react-markdown'
 
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import { NavLink, useParams } from "react-router-dom";
@@ -93,7 +94,9 @@ export function OpenedPost(){
 
       <MainContainer>
         <p>
-          {issue?.body}
+          <ReactMarkdown>
+            {issue?.body}
+          </ReactMarkdown>
         </p>
 
       </MainContainer>
